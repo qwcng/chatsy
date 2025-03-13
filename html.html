@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Chat App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="notification.css">
+    <!-- <link rel="stylesheet" href="icons.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="main ">
+        <div class="profile ">
+            <img class="pfp" src="pfp.png" loading="lazy" alt="Profile Picture">
+            <p class="username" onclick="changeUsername(this);">User123</p>
+            <p><i class="icon fa-solid fa-pen-to-square fa-2xl"></i></p>
+        </div>
+
+        <div class='friends '>
+            <div class='friend menu selected' style="display:flex; align-items: center;">
+                <a href='index.html' style='text-decoration:none;'> 
+                    <div class='avatar'><i class="fa-solid fa-house fa-2xl" style="color:white"></i></div>
+                    <div class='nick r' style="color:black;">Strona główna</div>
+                </a>
+            </div>
+
+            <div class="search">
+                <form action="#">
+                    <i class="fa-solid fa-magnifying-glass fa-xl"></i>
+                    <input type="text" class="search_input" placeholder="Search for friends">
+                </form>
+            </div>
+
+            <div class='friend selected'>
+                <a href='#' style='text-decoration:none;'>
+                    <div class='avatar'><img src='pfp.png' alt='Friend Avatar'></div>
+                    <div class='nick r'>Friend1</div>
+                    <div class='message-s'>Msg</div>
+                </a>
+            </div>
+
+            <h3 class="font">Przychodzące zaproszenia</h3>
+            <div class='friend '>
+                <div class='avatar'><img src='pfp.png' alt='Friend Avatar'></div>
+                <div class='nick r'>Friend2</div>
+                <i class="fa-solid fa-check fa-2xl" style="color:rgb(4, 224, 158);"></i>      
+                <i class="fa-solid fa-xmark fa-2xl" style="color: #ff0000;"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="mobile  shadow">
+        
+        <div class="  mobile-header">
+            <img src='new.png' loading="lazy" class=' avatar' alt='Friend Avatar'>
+            <h2 class="font ">username</h2>
+        </div>
+        
+        <div class="friends-scroll  ">
+            <div class="friend-scroll ">
+                <img src='pfp.png' loading="lazy" class=' avatar-scroll' alt='Friend Avatar'>
+                <b class="font">User</b>
+            </div>
+            <div class="friend-scroll ">
+                <img src='pfp.png' loading="lazy" class=' avatar-scroll' alt='Friend Avatar'>
+                <b class="font">user2</b>
+            </div>
+            <div class="friend-scroll ">
+                <img src='pfp.png' loading="lazy" class=' avatar-scroll' alt='Friend Avatar'>
+                <b class="font">user3</b>
+            </div>
+
+            
+        </div>
+        <div class='friends'>
+            <div class="search">
+                <form action="#">
+                    <i class="fa-solid fa-magnifying-glass fa-xl"></i>
+                    <input type="text" class="search_input" placeholder="Wyszukaj znajomych">
+                </form>
+            </div>
+
+            <div class='friend shadow'>
+                <a href='#' style='text-decoration:none;'>
+                    <div class='avatar'><img src='pfp.png' alt='Friend Avatar'></div>
+                    <div class='nick font r'>Friend1</div>
+                    <div class='message-s '>Msg</div>
+                </a>
+            </div>
+
+    
+
+        </div>
+
+
+    </div>
+    <div class="mobile-bar ">
+        <a href='html.html' class="item">
+            <i class="fa-solid fa-user-group fa-2xl" style="color:white;"></i>
+        </a>
+        <a href=''class="item">
+            <i class="fa-solid fa-plus fa-2xl" style="color:white;"></i>
+        </a>
+        <a href='profile.html' class="item">
+            <img src='new.png'class=' avatar-bar' alt='Friend Avatar'>
+        </a>
+    </div>
+    <script>
+        function changeUsername(element){
+            let input = document.createElement("input");
+            input.type = "text";
+            input.className = element.className;
+            input.value = element.innerText;
+            element.replaceWith(input);
+            input.focus();
+        }
+    </script>
+</body>
+</html>
+<!-- <h2 class="font">Dodaj znajomego</h2>
+            <form id="addFriend" method="post">
+                <h4>Podaj nazwę użytkownika</h4>
+                <input name="username" type="text" class="input"> <br>
+                <button type="submit">Dodaj</button>
+            </form> -->
