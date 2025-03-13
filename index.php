@@ -220,7 +220,7 @@ function addFriend(){
     </script>
     <script>
         <?php if(isset($_GET['id'])):?>
-const conn = new WebSocket('ws://192.168.158.46:8080');
+const conn = new WebSocket('ws://localhost:8080');
 
 // Po nawiązaniu połączenia, wyślij user_id do serwera
 conn.onopen = function() {
