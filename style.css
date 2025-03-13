@@ -390,20 +390,21 @@ body.main-hidden .chat-app {
 }
 @media (max-width:770px){
     .mobile-bar{
-        display:flex !important;
+        display:flex ;
     }
 }
 .toast{
+    display: none ;
     width: 17rem;
     height: 15rem;
     border: #252525 1px solid;
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
 
     align-items: center;
     gap:10px;
     position:relative;
-    z-index: 10px;
+    z-index: 16;
     background-color: #25252565;
     border-radius: 15px;
     padding:10px;

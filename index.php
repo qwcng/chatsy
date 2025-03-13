@@ -54,9 +54,9 @@ if(!$user->isLogged()){
                 </a>
             </div>
             
-            <form id="addFriend" method="post" class="form toast">
+            <form id="addFriend" method="post" class="form toast" >
                 <h2 class="font">Dodaj znajomego</h2>
-                <i class="fa-solid fa-xmark fa-xl" style="color:rgb(255, 28, 28); position:absolute; right:0; margin:5px;" onclick="addFriend();"></i>></i>
+                <i class="fa-solid fa-xmark fa-xl" style="color:rgb(255, 28, 28); position:absolute; right:0; margin:5px;" onclick="addFriend();"></i>
                 <input name="username" type="text" class="input" placeholder="nazwa użytkownika ">
                 <button type="submit" class="button font">Dodaj</button>
             </form>
@@ -140,6 +140,7 @@ if(!$user->isLogged()){
         </div>
         
         <div class="friends-scroll  ">
+            
             <?php foreach($friends as $friend):?>
 
             <div class="friend-scroll ">
@@ -153,6 +154,18 @@ if(!$user->isLogged()){
             
         </div>
         <div class='friends'>
+        <div class='friend  selected ' >
+                <a style='text-decoration:none; margin: auto 0;' onclick="addFriend(); "> 
+                    <div class='avatar'><i class="fa-solid fa-user-plus fa-2xl" style="color: #ffffff;"></i></div>
+                    <div class='nick r font' >Dodaj znajomego</div>
+                </a>
+        </div>
+        <form id="addFriendm" method="post" class="form toast" >
+                <h2 class="font">Dodaj znajomego</h2>
+                <i class="fa-solid fa-xmark fa-xl" style="color:rgb(255, 28, 28); position:absolute; right:0; margin:5px;" onclick="addFriend();"></i>
+                <input name="username" type="text" class="input" placeholder="nazwa użytkownika ">
+                <button type="submit" class="button font">Dodaj</button>
+            </form>
             <div class="search">
                 <form action="#">
                     <i class="fa-solid fa-magnifying-glass fa-xl"></i>
@@ -162,13 +175,13 @@ if(!$user->isLogged()){
             <?php 
             $friends = $user->getFriends();
             foreach($friends as $friend): ?>
-            
-                <a href='?id=<?php echo $friend['id']; ?>' class='friend shadow' style='text-decoration:none;'>
+            <div class='friend shadow'>
+                <a href='?id=<?php echo $friend['id']; ?>'  style='text-decoration:none;'>
                     <div class='avatar'><img src='pfp.png' lazy='load' alt='Friend Avatar'></div>
                     <div class='nick font r'><?php echo $chat->getSenderUsername($friend['id'])?></div>
                     <div class='message-s '>Msg</div>
                 </a>
-            
+            </div>
             <?php endforeach; ?>
 
     
@@ -194,7 +207,15 @@ if(!$user->isLogged()){
  
 <script>
 function addFriend(){
-    
+    console.log("123");
+    let toast = document.getElementById("addFriendm");
+    if(toast.style.display == "none"){
+        toast.style.display = "flex";
+    }
+    else{
+        toast.style.display = "none";
+    }
+    // toast.style.display = "flex"
 }
  document.getElementById("addFriend").onsubmit = (e) => {
     e.preventDefault();
@@ -219,6 +240,10 @@ function addFriend(){
 };
     </script>
     <script>
+        
+        const chatBox = document.getElementById('chatBox');
+        chatBox.scrollTop = chatBox.scrollHeight;
+        
         <?php if(isset($_GET['id'])):?>
 const conn = new WebSocket('ws://localhost:8080');
 
@@ -251,6 +276,7 @@ function sendMessage() {
         conn.send(JSON.stringify(data));
 
         // Dodanie wiadomości do chat box (lokalne wyświetlanie)
+        
         const chatBox = document.getElementById('chatBox');
         chatBox.innerHTML += `<div class="outcoming"><div class="message-data">${message}</div></div>`;
         chatBox.scrollTop = chatBox.scrollHeight;
