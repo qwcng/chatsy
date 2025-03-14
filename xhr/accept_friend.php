@@ -1,17 +1,16 @@
 <?php
 session_start();
-require 'User.php';
+require '../User.php';
 $user = new User();
-$chat= new Chat();
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['username'])) {
-        $username = $_POST['username'];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['request_id'])) {
+        $requestId = $_POST['request_id'];
         // Sprawdzenie, czy użytkownik istnieje w bazie
         $userId = $user->getUserId();
         
-        if ($chat->addFriend($userId, $username)) {
+        if ($user->accepptRequest($requestId)) {
             echo 'success';  // Możesz tu zwrócić odpowiedź, żeby JavaScript wiedział, czy wszystko poszło ok
         } else {
             echo 'error';
         }
     }
-    ?>
+?>

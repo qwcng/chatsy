@@ -1,8 +1,5 @@
 <?php
-session_start();
-require 'User.php';
-$user= new User();
-$chat =new Chat();
+require_once 'cfg.php';
 
 if(!$user->isLogged()){
     header('Location: login.php');
@@ -40,19 +37,21 @@ if(!$user->isLogged()){
             <p class="username font " onclick="" ><?php echo $user->getUsername();?></p>
             <p></p>
         </div>
-        <div class="friends">
-            <div class='setting  selected ' >
-                <a href='index.php' style='text-decoration:none; margin: auto 0;'> 
-                    <div class='avatar'><i class="fa-solid fa-house fa-2xl" style="color:white"></i></div>
+        <div class="friends" id="friends">
+            
+            <div class="setting  selected">
+                <a href='index.php' style='text-decoration:none; margin: auto 10px; '> 
+                    <div class="avatar"><i class="fa-solid fa-house fa-2xl" style="color:white"></i></div>
                     <div class='nick r font' >Strona główna</div>
-                </a>
+                </a> 
             </div>
-            <div class='setting  selected ' >
-                <a style='text-decoration:none; margin: auto 0;' onclick="addFriend();"> 
-                    <div class='avatar'><i class="fa-solid fa-user-plus fa-2xl" style="color: #ffffff;"></i></div>
+            <div class="setting  selected ">
+                <a style='text-decoration:none; margin: auto 10px;' onclick="addFriend();" > 
+                    <div class="avatar"><i class="fa-solid fa-user-plus fa-2xl" style="color: #ffffff;"></i></div>
                     <div class='nick r font' >Dodaj znajomego</div>
                 </a>
             </div>
+            
             
             <form id="addFriend" method="post" class="form toast" >
                 <h2 class="font">Dodaj znajomego</h2>
@@ -69,18 +68,18 @@ if(!$user->isLogged()){
                 </form>
                 
             </div>
-            <?php $friends = $user->getFriends();
+            <div id="friendsList" class="friends" style="width: 100%;">
+                <?php 
+                    include 'friends.php';
+                ?>
+            </div>
             
-            
-            foreach($friends as $friend):?>
-                <div class='friend selected'>
-                                <a href='?id=<?php echo $friend['id'] ?>' style='text-decoration:none;'>
-                                    <div class='avatar'><img src='pfp.png' alt='Friend's Avatar'></div>
-                                    <div class='nick r font'><?php echo $chat->getSenderUsername($friend['id'])?></div>
-                                    <div class='message-s'>Msg</div>
-                                </a>
-                </div>
-            <?php endforeach;?>
+            <?php 
+            // if($user->accepptRequest(4)){
+            //     echo "wow";
+            // }
+
+            ?>
             <h3 class="font">Przychodzące zaproszenia</h3>
             <?php $requests = $user->getPendingFriends();
             foreach($requests as $request):?>
@@ -89,8 +88,16 @@ if(!$user->isLogged()){
                     <div class='avatar'><img src='pfp.png' alt='Friend's Avatar'></div>
                     <div class="nick font">Userer</div>
                     <div class="message-s">
-                    <i class="fa-solid fa-check fa-2xl" style="color:rgb(4, 224, 158);"></i>      
-                    <i class="fa-solid fa-xmark fa-2xl" style="color: #ff0000;"></i>
+                    <form action="" method="POST" id="accept">
+                        <input type="hidden" name="action" value="">
+                        <input type="hidden" name="request_id" value="<?php echo $request['id']; ?>">
+                        <button type="submit" onclick="this.form.action.value='accept';" style="background: none; border: none;">
+                            <i class="fa-solid fa-check fa-2xl" style="color:rgb(4, 224, 158);"></i>
+                        </button>
+                        <button type="submit" onclick="this.form.action.value='reject';" style="background: none; border: none;">
+                            <i class="fa-solid fa-xmark fa-2xl" style="color: #ff0000;"></i>
+                        </button>
+                    </form>
                 </div>
                 </div>
                      
@@ -107,7 +114,13 @@ if(!$user->isLogged()){
         <div class="header">
             <i onclick="back()" class="fa-solid fa-arrow-left fa-xl" style="color: #ffffff; margin: auto 10px;"></i>
             <img class="chat-pfp" src="pfp.png" alt="Chat Avatar"> 
-            <div class="nick font"> <?php echo $chat->getSenderUsername($_GET['id']);?> <p class="status">Online</p></div>
+            <div class="nick font"> <?php echo $chat->getSenderUsername($_GET['id']);?>
+                <?php if($chat->isOnline($_GET['id'])){
+                    echo "<p class='status online'>online </p>";
+                }else{
+                    echo "<p class='status offline'>offline </p>";   
+                }?>
+    </div>
         </div>
         <div class="chat-box " id="chatBox">
             
@@ -143,46 +156,42 @@ if(!$user->isLogged()){
             
             <?php foreach($friends as $friend):?>
 
-            <div class="friend-scroll ">
-                <a href="?id=<?php echo $friend['id']?>">
+            <!-- <div class=" "> -->
+                <a href="?id=<?php echo $friend['id']?>" class="friend-scrol">
                     <img src='pfp.png'class=' avatar-scroll' alt='Friend Avatar'>
                     <b class="font"><?php echo $chat->getSenderUsername($friend['id']) ?> </b>
                 </a>
-            </div>
+            <!-- </div> -->
             <?php endforeach;?>
 
             
         </div>
         <div class='friends'>
-        <div class='friend  selected ' >
-                <a style='text-decoration:none; margin: auto 0;' onclick="addFriend(); "> 
-                    <div class='avatar'><i class="fa-solid fa-user-plus fa-2xl" style="color: #ffffff;"></i></div>
-                    <div class='nick r font' >Dodaj znajomego</div>
-                </a>
-        </div>
+
+            <a style='text-decoration:none; margin: auto 0;' onclick="addFriend();" class=" setting  selected "> 
+                <i class="fa-solid fa-user-plus fa-xl" style="color: #ffffff;"></i>
+                <div class='nick r font ' >Dodaj znajomego</div>
+            </a>
+
         <form id="addFriendm" method="post" class="form toast" >
                 <h2 class="font">Dodaj znajomego</h2>
                 <i class="fa-solid fa-xmark fa-xl" style="color:rgb(255, 28, 28); position:absolute; right:0; margin:5px;" onclick="addFriend();"></i>
                 <input name="username" type="text" class="input" placeholder="nazwa użytkownika ">
                 <button type="submit" class="button font">Dodaj</button>
             </form>
-            <div class="search">
+            <div class="search selected">
                 <form action="#">
                     <i class="fa-solid fa-magnifying-glass fa-xl"></i>
                     <input type="text" class="search_input" placeholder="Wyszukaj znajomych">
                 </form>
             </div>
-            <?php 
-            $friends = $user->getFriends();
-            foreach($friends as $friend): ?>
-            <div class='friend shadow'>
-                <a href='?id=<?php echo $friend['id']; ?>'  style='text-decoration:none;'>
-                    <div class='avatar'><img src='pfp.png' lazy='load' alt='Friend Avatar'></div>
-                    <div class='nick font r'><?php echo $chat->getSenderUsername($friend['id'])?></div>
-                    <div class='message-s '>Msg</div>
-                </a>
+            
+            <div id="friendsList" class="friends" style="width: 100%;">
+                <?php 
+                    include 'friends.php';
+                ?>
             </div>
-            <?php endforeach; ?>
+
 
     
 
@@ -206,9 +215,16 @@ if(!$user->isLogged()){
  <script src="notification.js"></script>
  
 <script>
+function pop() {
+        const audio = new Audio('pop.ogg');
+        audio.play().catch((error) => {
+            console.error("Wystąpił błąd podczas odtwarzania dźwięku:", error);
+        });
+    
+}
 function addFriend(){
     console.log("123");
-    let toast = document.getElementById("addFriendm");
+    let toast = document.getElementById("addFriend");
     if(toast.style.display == "none"){
         toast.style.display = "flex";
     }
@@ -217,12 +233,13 @@ function addFriend(){
     }
     // toast.style.display = "flex"
 }
+if(document.getElementById("addFriend")){
  document.getElementById("addFriend").onsubmit = (e) => {
     e.preventDefault();
     
     const form = e.target;
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "add_friend.php", true);  // Zmiana na oddzielny plik!
+    xhr.open("POST", "xhr/add_friend.php", true);  // Zmiana na oddzielny plik!
 
     xhr.onload = () => {  
         console.log(xhr.responseText);
@@ -237,30 +254,58 @@ function addFriend(){
 
     const formData = new FormData(form);
     xhr.send(formData);
+    console.log(formData);
 };
-    </script>
+}
+if(document.getElementById("accept")){
+    document.getElementById("accept").onclick = (e) =>{
+        e.preventDefault();
+        const form = e.target.closest('form');
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "xhr/accept_friend.php", true);
+        xhr.onload = ()=>{
+            if(xhr.status === 200){
+                if(xhr.responseText === 'success'){
+                    notification("Sukces: Zaakceptowano zaproszenie");
+                    setTimeout(()=>{
+                        $("#friendsList").load("friends.php");
+                    }, 100);
+                    
+                }else{
+                    notification("Błąd: " + xhr.responseText);
+                    console.log(xhr.responseText);
+                }
+            }
+        };
+        const formData = new FormData(form);
+        xhr.send(formData);
+        console.log(formData);
+    }}
+        </script>
     <script>
         
         const chatBox = document.getElementById('chatBox');
         chatBox.scrollTop = chatBox.scrollHeight;
         
         <?php if(isset($_GET['id'])):?>
-const conn = new WebSocket('ws://localhost:8080');
+const conn = new WebSocket('ws://192.168.73.34:8080');
 
 // Po nawiązaniu połączenia, wyślij user_id do serwera
 conn.onopen = function() {
     console.log('Connected to WebSocket server');
-    // Wysłanie user_id po połączeniu
     conn.send(JSON.stringify({ user_id: <?php echo $user->getUserId(); ?> }));
 };
 
 conn.onmessage = function(e) {
     const data = JSON.parse(e.data);
     const chatBox = document.getElementById('chatBox');
+    pop();
     const messageClass = data.sender_id == <?php echo $user->getUserId(); ?> ? 'outcoming' : 'incoming';
     chatBox.innerHTML += `<div class="${messageClass}"><div class="message-data">${data.message}</div></div>`;
     chatBox.scrollTop = chatBox.scrollHeight;
-};
+    setTimeout(()=>{
+                        $("#friendsList").load("friends.php");
+                    }, 100);};
 
 // Funkcja do wysyłania wiadomości
 function sendMessage() {
@@ -283,6 +328,9 @@ function sendMessage() {
 
         // Czyszczenie inputa
         document.querySelector('.input-message').value = '';
+        setTimeout(()=>{
+                        $("#friendsList").load("friends.php");
+                    }, 100);
     }
 }
     <?php endif;?>

@@ -91,14 +91,23 @@ class User{
     } 
     function getFriends(){
         $id= $this->getUserId();
-        $query = "SELECT CASE 
-                    WHEN user1 = :id THEN user2 
-                    ELSE user1 
-                END AS id
-                FROM friends 
-                
-                WHERE (user1 = :id OR user2 = :id)
-                AND status = 'accepted';";
+        $query = "SELECT 
+        CASE 
+            WHEN user1 = :id THEN user2 
+            ELSE user1 
+        END AS id
+
+    FROM friends 
+    WHERE (user1 = :id OR user2 = :id) 
+      AND status = 'accepted'
+    ORDER BY (SELECT sent_at 
+         FROM messages 
+         WHERE (sender_id = :id AND receiver_id = CASE WHEN user1 = :id THEN user2 ELSE user1 END)
+            OR (sender_id = CASE WHEN user1 = :id THEN user2 ELSE user1 END AND receiver_id = :id) 
+         ORDER BY sent_at DESC 
+         LIMIT 1) DESC;
+";
+
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id',$id);
         $stmt->execute();
@@ -120,27 +129,39 @@ class User{
         $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $requests;
        
-}
-function accepptRequest($request){
-  $query = "";
-  $stmt = $this->pdo->prepare($query);
-  $stmt-> bindParam(':id',$this->getId());
-  $stmt-> bindParam(':request',$request);
-  $stmt-> execute();
-  return true;
+    }
+    function accepptRequest($request){
+        $query = "UPDATE friends SET status = 'accepted' WHERE user1 = :request AND user2 = :id";
+        $id= $this->getUserId();
+        $stmt = $this->pdo->prepare($query);
+        $stmt-> bindParam(':id',$id);
+        $stmt-> bindParam(':request',$request);
+        $stmt-> execute();
+        
+        return true;
   
 
-}
-function denyRequest($request){
-  $query = "";
-  $stmt = $this->pdo->prepare($query);
-  $stmt-> bindParam(':id',$this->getId());
-  $stmt-> bindParam(':request',$request);
-  $stmt-> execute();
-  return true;
-  
-
-}
+    }   
+    function denyRequest($request){
+        $query = "DELETE FROM friends WHERE user1 = :request AND user2 = :id AND status = 'pending'";
+        $id= $this->getUserId();
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':request', $request);
+        $stmt->execute();
+        return true;
+    }
+    function logout(){
+        session_destroy();
+        header("Location:index.php");
+    }
+    function status($id,$status){
+        $query = "UPDATE users SET status = :status WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':status',$status);
+        $stmt->bindParam(':id',$id);
+        $stmt->execute();
+    }
 
 }
 class Chat extends User{
@@ -195,5 +216,33 @@ class Chat extends User{
         $stmt->execute();
         return true;
 
+    }
+    function lastSentMessage($sender_id){
+        $id = $this->getUserId();
+        $stmt = $this->pdo->prepare("SELECT * FROM messages WHERE (receiver_id = :user_id AND sender_id = :receiver_id) OR (receiver_id = :receiver_id AND sender_id = :user_id) ORDER BY sent_at DESC LIMIT 1");
+        $stmt->bindParam(':user_id', $id);
+        $stmt->bindParam(':receiver_id',$sender_id);    
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if(!empty($result)){
+            return $result['message'];
+        }
+        else{
+            return "<i>Brak wiadomości</i>";
+        }
+    
+    }
+    function isOnline($id){
+        $query = "SELECT status FROM users WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id',$id);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if($result['status'] == 'online'){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

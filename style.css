@@ -37,10 +37,15 @@ a:focus {
     box-shadow: 0px 5px 10px #252525;
     border-radius: 10px;
 }
-.status {
+.online {
     margin: 0px;
     font-size: 14px;
     color: rgb(30, 219, 77);
+}
+.offline {
+    margin: 0px;
+    font-size: 14px;
+    color: rgb(204, 204, 204);
 }
 .username {
     font-size: 1.5rem;
@@ -53,6 +58,7 @@ a:focus {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
     
 }
 /* Lista znajomych */
@@ -79,7 +85,7 @@ a:focus {
 }
 
 .selected{
-    background:rgba(10, 10, 10, 0.185);
+    background:rgba(10, 10, 10, 0.285);
 }
 .menu{
     background:rgba(10, 10, 10, 0.185);
@@ -260,7 +266,7 @@ body.main-hidden .chat-app {
 .search{
     margin:10px auto;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 30px;
     border: none;
     background: none;
     /* backdrop-filter: brightness(73%); */
@@ -370,6 +376,18 @@ body.main-hidden .chat-app {
 .item{
     text-decoration: none;
 }
+.setting{
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+    /* justify-content: center; */
+}
+i{
+    vertical-align: middle;
+}
+
+
 @media (max-width: 1166px) {
     .main {
         display: none;

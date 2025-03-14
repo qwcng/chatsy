@@ -1,6 +1,7 @@
 <?php
 require 'vendor/autoload.php';
-require_once "user.php";
+require_once "User.php";
+
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
@@ -11,10 +12,12 @@ use Ratchet\Server\IoServer;
 class ChatServer implements MessageComponentInterface {
     protected $clients;
     protected $users;
+    protected $user;
     
     public function __construct() {
         $this->clients = new \SplObjectStorage;
         $this->users = []; // Przechowuje powiązania user_id -> connection
+        $this->user = new User();
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -23,20 +26,24 @@ class ChatServer implements MessageComponentInterface {
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
+        
+
         $data = json_decode($msg, true);
 
         if (isset($data['user_id'])) {
             // Rejestracja użytkownika w systemie powiązań user_id -> connection
             $this->users[$data['user_id']] = $from;
             echo "Użytkownik {$data['user_id']} został zarejestrowany.\n";
+            $this->user->status($data['user_id'], 'online');
+
+            
             return;
         }
 
         $sender_id = $data['sender_id'];
         $receiver_id = $data['receiver_id'];
         $message = $data['message'];
-
-        // Zapisz wiadomość do bazy danych
+        
         $chat = new Chat();
         $chat->sendMessage($sender_id, $receiver_id, $message);
 
@@ -52,6 +59,7 @@ class ChatServer implements MessageComponentInterface {
             if ($client === $conn) {
                 unset($this->users[$user_id]);
                 echo "Użytkownik {$user_id} rozłączony.\n";
+                $this->user->status($user_id, 'offline');
                 break;
             }
         }
