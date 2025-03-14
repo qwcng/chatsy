@@ -121,6 +121,27 @@ class User{
         return $requests;
        
 }
+function accepptRequest($request){
+  $query = "";
+  $stmt = $this->pdo->prepare($query);
+  $stmt-> bindParam(':id',$this->getId());
+  $stmt-> bindParam(':request',$request);
+  $stmt-> execute();
+  return true;
+  
+
+}
+function denyRequest($request){
+  $query = "";
+  $stmt = $this->pdo->prepare($query);
+  $stmt-> bindParam(':id',$this->getId());
+  $stmt-> bindParam(':request',$request);
+  $stmt-> execute();
+  return true;
+  
+
+}
+
 }
 class Chat extends User{
     private $id;
