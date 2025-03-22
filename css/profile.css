@@ -1,0 +1,112 @@
+
+.user-profile{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+    width: 80%;
+    height: 90dvh;
+    margin:10px auto;
+    /* background-color: rgba(32, 32, 32, 0.39); */
+    border-radius: 24px;
+    padding: 10px;
+    /* margin:10px; */
+    
+}
+.banner{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin:10px;
+    
+}
+.banner img{
+    height: 10rem;
+    width: 90%;
+    
+    margin: auto 0;
+    border-radius: 10px;
+    border:2px solid rgb(219, 214, 214);
+}
+.details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top:-50px;
+    width: 100%;
+}
+.details img{
+    border:2px solid rgb(219, 214, 214);
+    width: 64px;
+    height: 64px;
+}
+.description{
+    color: rgb(184, 185, 185);
+    font-size:1rem;
+}
+.info{
+    font-size:0.7rem;
+}
+.line{
+    width: 60%;
+    height: 1.5px;
+    border-radius: 15px;
+    background-color: rgb(219, 214, 214);
+}
+.settings{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+    
+}
+.setting{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-width: 50%;
+    max-width: 80%;
+    padding: 10px;
+    height: 32px;
+    border-radius: 15px;
+    margin-top: 10px;
+    /* border:none; */
+    /* background-color: rgba(10, 10, 10, 0.39); */
+    gap:10px;
+    transition:0.3s;
+    cursor:pointer
+
+}
+.title{
+    font-size:0.9rem
+}
+.set-icon{
+    width: 30px;
+    color:white;
+
+}
+.edit{
+    height: 32px;
+    background-color: rgba(10, 10, 10, 0.185);
+    border: none;
+    text-align: center;
+    width: 240px;
+    border-radius: 5px;
+    border:2px solid #04AA6D;
+    margin: 5px;
+}
+.edit:focus{
+    outline: none;
+}
+.setting:hover{
+    background-color: rgba(56, 56, 56, 0.39);
+}
+.saveTheme{
+    display: none;
+}
