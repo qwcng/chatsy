@@ -32,7 +32,7 @@
         <div class="search">
             <form action="post">
                 <i class="fa-solid fa-magnifying-glass fa-xl"></i>
-                <input type="text" class="search_input" placeholder="Search for friends">
+                <input type="text" class="search_input" placeholder="Search for friends" oninput="searchFriends(this)">
 
             </form>
 

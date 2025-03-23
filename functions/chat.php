@@ -8,16 +8,18 @@
 
     </div>
     <div class="details">
-        <img src="new.png" class="avatar" alt="profile">
-        <e class="font username" id="username"><?php echo $chat->getSenderUsername($_GET['id']);?></e>
+        <img src="new.png" id='avatar' class="avatar" alt="profile">
+        <span id='username' class="font username" id="username"><?= $chat->getSenderUsername($_GET['id']);?> </span>
         <!-- <button class="save"></button> -->
 
         <!-- <input type="text" class="edit font username" value="Username"> -->
         <div class="line"></div>
-        <div class="description font info">Joined 25.02.2025</div>
-        <div class="description font">
-            No bio yet
+        <div class="description font info">Joined
+            <?php echo (new DateTime($user->getJoinDate()))->format('d.m.Y');       ?></div>
+        <div class="description font bio">
+            <?= $user->getUserBio($_GET['id']);?>
         </div>
+
     </div>
     <!-- <h3 class="ustawienia font ">Settings</h3> -->
     <div class="settings ">
@@ -125,11 +127,13 @@
         <div class="search selected">
             <form action="#">
                 <i class="fa-solid fa-magnifying-glass fa-xl"></i>
-                <input type="text" class="search_input" placeholder="Wyszukaj znajomych">
+                <input type="text" class="search_input" placeholder="Search for friends..."
+                    oninput="searchFriends(this)">
             </form>
         </div>
 
         <div id="friendsList" class="friends" style="width: 100%;">
+            <div id="resultM"></div>
             <?php 
                     include 'friends.php';
                 ?>

@@ -49,8 +49,8 @@ if (!$user->isLogged()) {
             <div class="line"></div>
             <div class="description font info">Joined
                 <?php echo (new DateTime($user->getJoinDate()))->format('d.m.Y');       ?></div>
-            <div class="description font">
-                No bio yet
+            <div class="description font bio">
+                <?= $user->getUserBio();?>
             </div>
 
         </div>
@@ -67,6 +67,12 @@ if (!$user->isLogged()) {
                 <i class="set-icon fa-solid fa-palette fa-xl"></i>
                 <div class="title font">Appearance</div>
             </div>
+            <!-- logout -->
+            <div class="setting selected logout">
+                <i class="set-icon fa-solid fa-door-open fa-xl"></i>
+                <div class="title font">Logout</div>
+
+            </div>
         </div>
 
     </div>
@@ -80,10 +86,29 @@ if (!$user->isLogged()) {
     <script src="functions/js/xhr.js"></script>
     <script src="notification.js"></script>
     <script>
+    document.querySelector('.logout').onclick = function() {
+        let Data = new FormData();
+        Data.append('status', true);
+        console.log(Data);
+        quickXHR("xhr/logout.php", "POST", Data, "Logged out");
+        setTimeout(() => {
+            window.location.href = "login.php";
+        }, 100);
+    }
+
     function editUsername() {
         let element = document.getElementById("username")
         let input = document.createElement("input");
         let save = document.querySelector(".saveTheme");
+        let bio = document.querySelector(".bio");
+        let bioInput = document.createElement("input");
+        bioInput.type = "text";
+        bioInput.className = "edit font bio";
+        bioInput.value = bio.innerText;
+        bioInput.name = "bio";
+        bio.replaceWith(bioInput);
+        bioInput.focus();
+
         save.style.display = "block";
         input.type = "text";
         input.className = "edit font username";
@@ -92,13 +117,15 @@ if (!$user->isLogged()) {
 
         element.replaceWith(input);
         input.focus();
+
     }
     document.getElementById("saveUsername").onclick = function() {
         abortEdit();
         let input = document.querySelector(".edit").value;
         let formData = new FormData();
         formData.append("username", input);
-        quickXHR("xhr/edit_username.php", "POST", formData, "Successfully changed username");
+        formData.append("bio", document.querySelector(".bio").value);
+        quickXHR("xhr/edit_username.php", "POST", formData, "Success");
     }
 
     function abortEdit() {

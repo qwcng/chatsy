@@ -164,6 +164,43 @@ if(!$user->isLogged()){
         }
     }
     </script>
+    <script>
+    function searchFriends(element) {
+        let input = element.value;
+        let friends = document.querySelectorAll('.friend');
+        let sum = 0;
+        console.log(friends.length);
+        friends.forEach(friend => {
+
+            let name = friend.querySelector('.nick').innerText;
+            if (name.toLowerCase().includes(input.toLowerCase())) {
+                friend.style.display = "flex";
+                setTimeout(() => {
+                    friend.style.opacity = "1";
+                    friend.style.width = "80%";
+                }, 50);
+            } else {
+                friend.style.opacity = "0";
+                setTimeout(() => {
+                    friend.style.display = "none";
+                    friend.style.width = "70%";
+                }, 100);
+
+                sum += 1;
+            }
+
+
+        })
+        console.log(sum);
+        if (friends.length == sum) {
+            document.getElementById('resultM').innerHTML =
+                "<span class='font'>Nie znaleziono znajomych</span>";
+        } else {
+            document.getElementById('resultM').innerHTML = "";
+        }
+
+    }
+    </script>
     <?php
         include 'functions/websocket.php';
     ?>

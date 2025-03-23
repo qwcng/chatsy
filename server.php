@@ -1,6 +1,6 @@
 <?php
 require 'vendor/autoload.php';
-require_once "User.php";
+require_once "cfg.php";
 
 
 use Ratchet\MessageComponentInterface;
@@ -13,11 +13,12 @@ class ChatServer implements MessageComponentInterface {
     protected $clients;
     protected $users;
     protected $user;
-    
+    protected $chat;    
     public function __construct() {
         $this->clients = new \SplObjectStorage;
-        $this->users = []; // Przechowuje powiązania user_id -> connection
+        $this->users = [];
         $this->user = new User();
+        $this->chat = new Chat();
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -31,12 +32,9 @@ class ChatServer implements MessageComponentInterface {
         $data = json_decode($msg, true);
 
         if (isset($data['user_id'])) {
-            // Rejestracja użytkownika w systemie powiązań user_id -> connection
             $this->users[$data['user_id']] = $from;
             echo "Użytkownik {$data['user_id']} został zarejestrowany.\n";
             $this->user->status($data['user_id'], 'online');
-
-            
             return;
         }
 
@@ -44,10 +42,7 @@ class ChatServer implements MessageComponentInterface {
         $receiver_id = $data['receiver_id'];
         $message = $data['message'];
         
-        $chat = new Chat();
-        $chat->sendMessage($sender_id, $receiver_id, $message);
-
-        // Wysyłanie wiadomości do konkretnego odbiorcy
+        $this->chat->sendMessage($sender_id, $receiver_id, $message);
         if (isset($this->users[$receiver_id])) {
             $this->users[$receiver_id]->send(json_encode($data));
         }

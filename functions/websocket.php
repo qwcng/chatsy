@@ -18,8 +18,18 @@ conn.onmessage = function(e) {
     const chatBox = document.getElementById('chatBox');
     pop();
     const messageClass = data.sender_id == <?php echo $user->getUserId(); ?> ? 'outcoming' : 'incoming';
-    chatBox.innerHTML += `<div class="${messageClass}"><div class="message-data">${data.message}</div></div>`;
+    const newMessage = document.createElement('div');
+    newMessage.classList.add(messageClass);
+
+
+    // Dodanie animacji tylko dla nowej wiadomości
+    newMessage.style.animation = "pop 0.5s";
+
+    newMessage.innerHTML = `<div class="message-data">${data.message}</div>`;
+    chatBox.appendChild(newMessage);
     chatBox.scrollTop = chatBox.scrollHeight;
+
+
 
     setTimeout(() => {
         $("#friendsList").load("friends.php");
@@ -41,7 +51,15 @@ function sendMessage() {
 
         // Dodanie wiadomości do chat box (lokalne wyświetlanie)
         const chatBox = document.getElementById('chatBox');
-        chatBox.innerHTML += `<div class="outcoming"><div class="message-data">${message}</div></div>`;
+        //use append function to add message to chat box
+        const newMessage = document.createElement('div');
+        newMessage.classList.add('outcoming');
+
+        // Dodanie animacji tylko dla nowej wiadomości
+
+
+        newMessage.innerHTML = `<div class="message-data">${message}</div>`;
+        chatBox.appendChild(newMessage);
         chatBox.scrollTop = chatBox.scrollHeight;
 
         // Czyszczenie inputa

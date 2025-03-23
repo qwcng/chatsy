@@ -153,7 +153,7 @@ class User{
     }
     function logout(){
         session_destroy();
-        header("Location:index.php");
+        // header("Location: ../login.php");
     }
     function status($id,$status){
         $query = "UPDATE users SET status = :status WHERE id = :id";
@@ -179,6 +179,26 @@ class User{
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['created_at'];
+    }
+    function setUserBio($bio){
+        $id = $this->id;
+        $query = "UPDATE users SET bio = :bio WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':bio',$bio);
+        $stmt->bindParam(':id',$id);
+        $stmt->execute();
+        
+    }
+    function getUserBio($id = null){
+        if($id == null){
+            $id = $this->id;
+        }
+        $query = "SELECT bio FROM users WHERE id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id',$id);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['bio'];
     }
 
 
