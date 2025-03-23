@@ -1,9 +1,10 @@
 <script>
 const chatBox = document.getElementById('chatBox');
 chatBox.scrollTop = chatBox.scrollHeight;
-
-<?php if(isset($_GET['id'])): ?>
+<?php if (isset($_GET['id'])): ?>
 const conn = new WebSocket('ws://localhost:8080');
+
+
 
 // Po nawiązaniu połączenia, wyślij user_id do serwera
 conn.onopen = function() {
@@ -12,6 +13,7 @@ conn.onopen = function() {
         user_id: <?php echo $user->getUserId(); ?>
     }));
 };
+
 
 conn.onmessage = function(e) {
     const data = JSON.parse(e.data);

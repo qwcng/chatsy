@@ -42,42 +42,42 @@
                     include 'friends.php';
                 ?>
         </div>
-
-        <?php 
+    </div>
+    <?php 
             // if($user->accepptRequest(4)){
             //     echo "wow";
-            // }
+            // }sadasdasdasu f
 
             ?>
-        <h3 class="font">Przychodzące zaproszenia</h3>
-        <?php $requests = $user->getPendingFriends();
+    <h3 class="font">Przychodzące zaproszenia</h3>
+    <?php $requests = $user->getPendingFriends();
             foreach($requests as $request):?>
-        <div class='friend '>
-            <div class="">
-                <div class='avatar'><img src='pfp.png' alt='Friend' s Avatar'></div>
-                <div class="nick font">Userer</div>
-                <div class="message-s">
-                    <form action="" method="POST" id="accept">
-                        <input type="hidden" name="action" value="">
-                        <input type="hidden" name="request_id" value="<?php echo $request['id']; ?>">
-                        <button type="submit" onclick="this.form.action.value='accept';"
-                            style="background: none; border: none;">
-                            <i class="fa-solid fa-check fa-2xl" style="color:rgb(4, 224, 158);"></i>
-                        </button>
-                        <button type="submit" onclick="this.form.action.value='reject';"
-                            style="background: none; border: none;">
-                            <i class="fa-solid fa-xmark fa-2xl" style="color: #ff0000;"></i>
-                        </button>
-                    </form>
-                </div>
+    <div class='friend '>
+        <div class="">
+            <div class='avatar'><img src='pfp.png' alt='Friend' s Avatar'></div>
+            <div class="nick font">Userer</div>
+            <div class="message-s">
+                <form action="" method="POST" id="accept">
+                    <input type="hidden" name="action" value="">
+                    <input type="hidden" name="request_id" value="<?php echo $request['id']; ?>">
+                    <button type="submit" onclick="this.form.action.value='accept';"
+                        style="background: none; border: none;">
+                        <i class="fa-solid fa-check fa-2xl" style="color:rgb(4, 224, 158);"></i>
+                    </button>
+                    <button type="submit" onclick="this.form.action.value='reject';"
+                        style="background: none; border: none;">
+                        <i class="fa-solid fa-xmark fa-2xl" style="color: #ff0000;"></i>
+                    </button>
+                </form>
             </div>
-
-
-
-
-
         </div>
-        <?php endforeach; ?>
+
+
+
+
 
     </div>
+    <?php endforeach; ?>
+
+</div>
 </div>
