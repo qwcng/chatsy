@@ -1,46 +1,7 @@
 <?php if(isset($_GET['id'])):?>
-<div class="user-profile shadow">
-    <i onclick="info()" class="fa-solid fa-arrow-left fa-xl"
-        style="color: #ffffff; position:absolute; left:-20px; margin:10px auto;"></i>
-
-    <div class="banner ">
-        <img src="banner2.jpg" class="banner-img" alt="profile">
-
-    </div>
-    <div class="details">
-        <img src="new.png" id='avatar' class="avatar" alt="profile">
-        <span id='username' class="font username" id="username"><?= $chat->getSenderUsername($_GET['id']);?> </span>
-        <!-- <button class="save"></button> -->
-
-        <!-- <input type="text" class="edit font username" value="Username"> -->
-        <div class="line"></div>
-        <div class="description font info">Joined
-            <?php echo (new DateTime($user->getJoinDate()))->format('d.m.Y');       ?></div>
-        <div class="description font bio">
-            <?= $user->getUserBio($_GET['id']);?>
-        </div>
-
-    </div>
-    <!-- <h3 class="ustawienia font ">Settings</h3> -->
-    <div class="settings ">
-        <e class="font">Settings</e>
-        <div class="setting shadow" onclick="editUsername()">
-            <i class="set-icon fa-solid fa-user fa-xl"></i>
-            <div class="title font">Nicki</div>
-        </div>
-        <div class="setting shadow theme" onclick='themes();'>
-            <i class="set-icon fa-solid fa-palette fa-xl"></i>
-            <div class="title font">Motywy</div>
-        </div>
-        <span class="font themeName"></span>
-        <form method="POST" id="theme">
-            <input id='hiddenTheme' type="hidden" name="theme" value="1">
-            <button type="submit" class="saveTheme button">Zapisz</button>
-        </form>
-
-    </div>
-
-</div>
+<?php 
+    include './components/profile.php'
+    ?>
 <div class="chat-app hide">
     <div class="header">
         <i onclick="back()" class="fa-solid fa-arrow-left fa-xl" style="color: #ffffff; margin: auto 10px;"></i>

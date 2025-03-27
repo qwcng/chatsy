@@ -13,13 +13,17 @@ if(!$user->isLogged()){
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     <title>Chat App</title>
     <?php include 'config/css.php';?>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/spectrum-colorpicker2/dist/spectrum.min.js"> </script>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
@@ -54,7 +58,8 @@ if(!$user->isLogged()){
 
     <?php 
     $theme = $chat->getTheme();
-    echo"<script> useTheme('".$theme['background']."');</script>";
+    echo "<script> useTheme('".$theme['background']."', ".$theme['colors']."); </script>";
+
     ?>
     <?php
         include 'functions/header.php';
@@ -63,7 +68,7 @@ if(!$user->isLogged()){
         include 'functions/chat.php'
     ?>
     <div id="result"></div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script src="notification.js"></script>
     <script src="functions/js/xhr.js"></script>
     <script>
@@ -200,7 +205,20 @@ if(!$user->isLogged()){
         }
 
     }
+    const fileInput = document.getElementById("file");
+    fileInput.onchange = (e) => {
+        e.preventDefault();
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                customTheme(e.target.result);
+            }
+            reader.readAsDataURL(file);
+        }
+    }
     </script>
+
     <?php
         include 'functions/websocket.php';
     ?>

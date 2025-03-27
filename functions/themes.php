@@ -1,8 +1,19 @@
 <script>
-function useTheme(background) {
+function useTheme(background, colors) {
     let body = document.querySelector('body');
+
     document.body.style.background = `url('themes/${background}') no-repeat center center / cover`;
-    // document.documentElement.style.setProperty('--background', `url(./themes/${background})`);
+    document.documentElement.style.setProperty('--outcoming', colors[1])
+    document.documentElement.style.setProperty('--inputs', colors[1])
+    document.documentElement.style.setProperty('--incoming', colors[0])
+
+    // document.documentElement.style.setProperty('--background', `url(/themes/${background})`);
+}
+
+function customTheme(background) {
+    let body = document.querySelector('body');
+    document.body.style.background = `url('${background}') no-repeat center center / cover`;
+    // document.documentElement.style.setProperty('--background', `url(/themes/${background})`);
 }
 
 function themes() {
@@ -13,24 +24,35 @@ function themes() {
     let form = document.getElementById('theme');
     let themeName = [];
     let themeLabel = document.querySelector('.themeName');
+    let file = document.querySelector('.file');
+    let colors = []
+    let id = []
+    let themeId = document.querySelector('.themeId');
+    file.style.display = 'flex';
     <?php 
             $themes = $chat->getAllThemes();
             foreach ($themes as $theme): ?>
-    themes.push("<?php echo $theme['background']; ?>");
-    themeName.push("<?php echo $theme['name']; ?>");
+    id.push(<?= $theme['id']?>)
+    themes.push("<?= $theme['background']; ?>");
+    themeName.push("<?= $theme['name']; ?>");
+    colors.push(<?= $theme['colors']?>)
     <?php endforeach; ?>
 
 
     let changeTheme = document.querySelector('.theme');
 
     changeTheme.onclick = () => {
+
         submit.style.display = 'block';
         submit.onclick = () => {
-            // additional functionality here (if needed)
+
         };
         themeLabel.innerHTML = themeName[currentTheme];
-        useTheme(themes[currentTheme]);
-        themeInput.value = currentTheme + 1;
+
+
+        useTheme(themes[currentTheme], colors[currentTheme]);
+        themeInput.value = id[currentTheme];
+
         currentTheme++;
         if (currentTheme >= themes.length) {
             currentTheme = 0;

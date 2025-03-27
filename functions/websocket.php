@@ -2,7 +2,7 @@
 const chatBox = document.getElementById('chatBox');
 chatBox.scrollTop = chatBox.scrollHeight;
 <?php if (isset($_GET['id'])): ?>
-const conn = new WebSocket('ws://localhost:8080');
+const conn = new WebSocket('wss://networld.ct8.pl:40965');
 
 
 
@@ -41,6 +41,9 @@ conn.onmessage = function(e) {
 // Funkcja do wysyłania wiadomości
 function sendMessage() {
     const message = document.querySelector('.input-message').value;
+    const chatBox = document.getElementById('chatBox');
+    document.querySelector('.input-message').focus();
+    chatBox.scrollTop = chatBox.scrollHeight;
     if (message.trim() !== "") {
         const data = {
             message: message,

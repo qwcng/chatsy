@@ -5,8 +5,15 @@
     --outcoming: #0084FF;
     --inputs: rgb(100, 167, 255);
 }
+/* ["#E4E6EB", "#0084FF"] */
+
 * {
     -webkit-tap-highlight-color: transparent;
+    user-select: none; /* Wyłącza zaznaczanie tekstu */
+    -webkit-user-select: none; /* Dla Safari */
+    -ms-user-select: none; /* Dla IE */
+    
+    
 }
 body {
     margin: 0;
@@ -19,6 +26,8 @@ body {
     min-height: 100vh;
     width: 100vw;
     font-family: 'Poppins', sans-serif;
+    background-attachment: fixed;
+    touch-action: pan-x pan-y;
     
 }
 a{
@@ -167,8 +176,9 @@ body.main-hidden .chat-app {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    height: 80vh;
-    margin-bottom: 50px;
+    height: 78vh;
+
+    margin-bottom: 70px;
     width: auto;
 }
 
@@ -230,10 +240,12 @@ body.main-hidden .chat-app {
 /* Kolory wiadomości */
 .incoming .message-data {
     background-color: var(--incoming);
-    color: black;
+    color: color-contrast(var(--bg) vs black, white);
+    
 }
 .outcoming .message-data {
     background-color: var(--outcoming);
+    
     color: white;
 }
 
@@ -476,4 +488,7 @@ i{
     border-radius: 15px;
     padding:10px;
     
+}
+#color,#color2{
+    height: 24px !important;
 }

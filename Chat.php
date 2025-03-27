@@ -97,4 +97,14 @@ class Chat extends User{
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+    function addTheme($file,$name,$colors){
+        $query = "INSERT INTO themes (name,background,colors) VALUES (:name,:background,:colors)";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':name',$name);
+        $stmt->bindParam(':background',$file);
+        $stmt->bindParam(':colors',$colors);
+        $stmt->execute();
+        
+
+    }
 }
